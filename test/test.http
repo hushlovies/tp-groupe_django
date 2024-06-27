@@ -1,0 +1,98 @@
+### Requêtes pour les Projets ###
+
+# Récupérer tous les projets de recherche
+GET http://localhost:8000/api/projets/
+
+# Créer un nouveau projet de recherche
+POST http://localhost:8000/api/projets/
+Content-Type: application/json
+
+{
+  "titre": "Nouveau Projet",
+  "description": "Description du nouveau projet",
+  "date_debut": "2024-07-01",
+  "date_fin_prevue": "2024-12-31",
+  "chef_de_projet": 1  # Remplacez par l'ID d'un chercheur existant
+}
+
+# Récupérer un projet de recherche spécifique
+GET http://localhost:8000/api/projets/1/  # Remplacez 1 par l'ID du projet
+
+# Mettre à jour un projet de recherche
+PUT http://localhost:8000/api/projets/1/  # Remplacez 1 par l'ID du projet
+Content-Type: application/json
+
+{
+  "titre": "Projet Modifié",
+  "description": "Nouvelle description du projet",
+  "date_debut": "2024-07-01",
+  "date_fin_prevue": "2025-01-31",
+  "chef_de_projet": 2  # Remplacez par l'ID d'un autre chercheur existant
+}
+
+# Supprimer un projet de recherche
+DELETE http://localhost:8000/api/projets/1/  # Remplacez 1 par l'ID du projet à supprimer
+
+
+### Requêtes pour les Chercheurs ###
+
+# Récupérer tous les chercheurs
+GET http://localhost:8000/api/chercheurs/
+
+# Créer un nouveau chercheur
+POST http://localhost:8000/api/chercheurs/
+Content-Type: application/json
+
+{
+  "nom": "Test User",
+  "specialite": "Biologie"
+}
+
+# Récupérer un chercheur spécifique
+GET http://localhost:8000/api/chercheurs/1/  # Remplacez 1 par l'ID du chercheur
+
+# Mettre à jour un chercheur
+PUT http://localhost:8000/api/chercheurs/1/  # Remplacez 1 par l'ID du chercheur
+Content-Type: application/json
+
+{
+  "nom": "Jane Doe",
+  "specialite": "Physique"
+}
+
+# Supprimer un chercheur
+DELETE http://localhost:8000/api/chercheurs/1/  # Remplacez 1 par l'ID du chercheur à supprimer
+
+
+### Requêtes pour les Publications ###
+
+# Récupérer toutes les publications
+GET http://localhost:8000/api/publications/
+
+# Créer une nouvelle publication
+POST http://localhost:8000/api/publications/
+Content-Type: application/json
+
+{
+  "titre": "Nouvelle Publication",
+  "resume": "Résumé de la nouvelle publication",
+  "projet_associe": 1,  # Remplacez par l'ID d'un projet de recherche existant
+  "date_publication": "2024-07-15"
+}
+
+# Récupérer une publication spécifique
+GET http://localhost:8000/api/publications/1/  # Remplacez 1 par l'ID de la publication
+
+# Mettre à jour une publication
+PUT http://localhost:8000/api/publications/1/  # Remplacez 1 par l'ID de la publication
+Content-Type: application/json
+
+{
+  "titre": "Publication Modifiée",
+  "resume": "Nouveau résumé de la publication",
+  "projet_associe": 2,  # Remplacez par l'ID d'un autre projet de recherche existant
+  "date_publication": "2024-08-01"
+}
+
+# Supprimer une publication
+DELETE http://localhost:8000/api/publications/1/  # Remplacez 1 par l'ID de la publication à supprimer
