@@ -18,6 +18,7 @@ urlpatterns = [
     path('chercheurs/supprimer/<int:chercheur_id>/', views.supprimer_chercheur, name='supprimer_chercheur'),
     
     path('projets/', views.ProjetDeRechercheViewSet.as_view({'get': 'list', 'post': 'create'}), name='projets-list'),
+    path('export/projets/', views.export_projets_csv, name='export_projets_csv'),
     path('projets/<int:pk>/', views.ProjetDeRechercheViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='projet-detail'),
     path('publications/', views.PublicationViewSet.as_view({'get': 'list', 'post': 'create'}), name='publications-list'),
     path('publications/<int:pk>/', views.PublicationViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='publication-detail'),

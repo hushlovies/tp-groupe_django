@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchChercheurs, deleteChercheur } from '../../services/api';
 import { Link } from 'react-router-dom';
-import ExportButton from './ExportButton';
+import ExportButton from '../ExportButton';
 
 const Chercheurs = () => {
     const [chercheurs, setChercheurs] = useState([]);

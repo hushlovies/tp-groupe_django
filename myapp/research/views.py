@@ -79,6 +79,18 @@ def get_projet_by_id(request, id):
     except ProjetDeRecherche.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+def export_projets_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="projets.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Titre', 'Description', 'Date Début', 'Date Fin Prévue', 'Chef de Projet', 'Chercheurs'])
+    projets = ProjetDeRecherche.objects.all().values_list('titre', 'description', 'date_debut', 'date_fin_prevue', 'chef_de_projet', 'chercheurs')
+    for projet in projets:
+        writer.writerow(projet)
+
+    return response
+
 class PublicationViewSet(viewsets.ModelViewSet):
     queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
