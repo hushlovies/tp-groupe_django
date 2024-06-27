@@ -1,8 +1,17 @@
-# td-djangorestapi-CANARIA-KAIRA
-TP sur l'application de Suivi de Projets de Recherche avec Django
+# tp groupe 1 Django
+TP sur l'application de Suivi de Projets de Recherche avec Django et ajout des nouvelles fonctionnalités
+
+##Equipes
+- CANARIA Kaira
+- Rollet Gabrielle
+- Farez Lylia
+- Mahouche Tania
+
+
 
 ## Table des matières
 
+- [Fonctionnalitées](#fonctionnalitées)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -11,7 +20,12 @@ TP sur l'application de Suivi de Projets de Recherche avec Django
 - [Structure des Endpoints](#structure-des-endpoints)
 - [Tests](#tests)
 
+## Fonctionnalitées
 
+-Authentification
+- Graphe dans le dashboard avec ChartJS
+- Exportation des données en CSV
+  
 ## Prérequis
 
 Assurez-vous d'avoir les éléments suivants installés :
@@ -26,11 +40,11 @@ Clonez le dépôt et installez les dépendances :
 
 ```bash
 git clone https://github.com/votre-utilisateur/votre-repo.git
-cd votre-repo
-python -m venv venv
-source venv/bin/activate  # Sur Windows: venv\Scripts\activate
+python -m venv env
+pip install --upgrade setuptools
+env\Scripts\activate
 pip install -r requirements.txt
-
+cd myapp
 ```
 
 ## Configuration
@@ -67,6 +81,7 @@ python manage.py runserver
 ```
 
 Démarrez le frontend de développement :
+Dans un autre terminal, saissisez la commande
 ```bash
 cd frontend
 npm install
