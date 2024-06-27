@@ -1,92 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import { addPublication, fetchChercheurs } from '../../services/api';
+import React, { useState } from 'react';
+import { addChercheur } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
-const AddPublication = () => {
-    const [titre, setTitre] = useState('');
-    const [date, setDate] = useState('');
-    const [description, setDescription] = useState('');
-    const [chercheur, setChercheur] = useState('');
-    const [chercheurs, setChercheurs] = useState([]);
+const AddChercheur = () => {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchChercheursData = async () => {
-            try {
-                const data = await fetchChercheurs();
-                setChercheurs(data);
-            } catch (error) {
-                console.error('Error fetching chercheurs:', error);
-            }
-        };
-
-        fetchChercheursData();
-    }, []);
+    const [nom, setNom] = useState('');
+    const [specialite, setSpecialite] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
-            const publicationData = { titre, date, description, chercheur };
-            await addPublication(publicationData);
-            alert('Publication added successfully!');
-            navigate('/publications'); // Redirect to publications list using useNavigate
+            const newChercheur = { nom, specialite };
+            await addChercheur(newChercheur);
+            setNom('');
+            setSpecialite('');
+            alert('Chercheur ajouté avec succès !');
+            navigate('/chercheurs');
         } catch (error) {
-            console.error('Error adding publication:', error);
-            alert('Failed to add publication.');
+            console.error('Error adding chercheur:', error);
+            alert('Échec de l\'ajout du chercheur.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="container mt-4">
-            <h3>Ajouter Publication</h3>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Titre:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={titre}
-                        onChange={(e) => setTitre(e.target.value)}
-                        required
-                    />
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h2 className="mb-4">Ajouter un Chercheur</h2>
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="nom">Nom :</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="nom"
+                                        value={nom}
+                                        onChange={(e) => setNom(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="specialite">Spécialité :</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="specialite"
+                                        value={specialite}
+                                        onChange={(e) => setSpecialite(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <button type="submit" className="btn btn-primary" disabled={isLoading}>
+                                    {isLoading ? 'Ajout en cours...' : 'Ajouter'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label>Date:</label>
-                    <input
-                        type="date"
-                        className="form-control"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Description:</label>
-                    <textarea
-                        className="form-control"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Chercheur:</label>
-                    <select
-                        className="form-control"
-                        value={chercheur}
-                        onChange={(e) => setChercheur(e.target.value)}
-                        required
-                    >
-                        <option value="">Sélectionner un chercheur</option>
-                        {chercheurs.map(chercheur => (
-                            <option key={chercheur.id} value={chercheur.id}>{chercheur.nom}</option>
-                        ))}
-                    </select>
-                </div>
-                <button type="submit" className="btn btn-primary">Ajouter</button>
-            </form>
+            </div>
         </div>
     );
 };
 
-export default AddPublication;
+export default AddChercheur;
