@@ -15,8 +15,14 @@ const Sidebar = () => {
             <Link to="/publications" className="list-group-item list-group-item-action">
                 Publications
             </Link>
+            <Link to="/graphes" className="list-group-item list-group-item-action">
+                ddd
+            </Link>
             </div>
+
+            
         </div>
+        
         
     );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
+import Dashboard from './components/Dashboard';
 import Chercheurs from './components/chercheur/Chercheurs';
 import AddChercheur from './components/chercheur/AddChercheur';
 import EditChercheur from './components/chercheur/EditChercheur';
@@ -13,6 +14,8 @@ import AddPublication from './components/publication/AddPublication';
 import EditPublication from './components/publication/EditPublication';
 import Header from './components/Header';
 
+
+
 function App() {
     return (
         <Router>
@@ -21,6 +24,7 @@ function App() {
                 <div className="row">
                     <div className="col-2">
                         <Sidebar />
+                        
                     </div>
                     <div className="col-10">
                         <div className="content">
@@ -40,6 +44,10 @@ function App() {
                                 <Route path="/publications" element={<Publications />} />
                                 <Route path="/add-publication" element={<AddPublication />} />
                                 <Route path="/edit-publication/:id" element={<EditPublication />} />
+
+                                {/* Dashboard */}
+                                <Route path="/graphes" element={<Dashboard />}/>
+
                             </Routes>
                         </div>
                     </div>
