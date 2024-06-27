@@ -34,7 +34,8 @@ const Chercheurs = () => {
                 setLoading(false);
             } catch (error) {
                 console.error('Erreur :', error);
-                setError('Erreur lors du chargement des chercheurs.');
+                //setError('Erreur lors du chargement des chercheurs.');
+                navigate('/auth-error');
                 setLoading(false);
             }
         };

@@ -28,7 +28,8 @@ const Projets = () => {
                 setLoading(false);
             } catch (error) {
                 console.error('Erreur :', error);
-                setError('Erreur lors du chargement des projets.');
+                //setError('Erreur lors du chargement des projets.');
+                navigate('/auth-error');
                 setLoading(false);
             }
         };

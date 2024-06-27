@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
 import Chercheurs from './components/chercheur/Chercheurs';
 import AddChercheur from './components/chercheur/AddChercheur';
 import EditChercheur from './components/chercheur/EditChercheur';
@@ -11,11 +10,9 @@ import EditProjet from './components/projet/EditProjet';
 import Publications from './components/publication/Publications';
 import AddPublication from './components/publication/AddPublication';
 import EditPublication from './components/publication/EditPublication';
-import Header from './components/Header';
-import Home from "./pages/Home"
-import Layout from './pages/Layout';
 import Register from './pages/Register';
 import Login from './pages/Login'
+import AuthError from './pages/AuthError';
 
 function App() {
     return (
@@ -31,12 +28,10 @@ function App() {
                                 <Route path="/" element={<Login/>}/>
                                 <Route path="login" element={<Login/>}/>
                                 <Route path="register" element={<Register/>}/>
-                                {/* <Route path='/' element={<Layout/>}/> */}
-                                {/* <Route index element={<Home/>}/> */}
-                               
+                                <Route path="/auth-error" element={<AuthError/>}/>
+                                
                                 {/* Chercheurs */}
-                               {/*  <Route index element={<Chercheurs />} /> */}
-                                {/* <Route path="/" element={<Chercheurs />} /> */}
+                              
                                 <Route path="/chercheurs" element={<Chercheurs />} />
                                 <Route path="/add-chercheur" element={<AddChercheur />} />
                                 <Route path="/chercheurs/:id" element={<EditChercheur />} />

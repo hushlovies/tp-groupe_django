@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 // Configuration de l'instance Axios
 const api = axios.create({
@@ -15,6 +17,10 @@ api.interceptors.request.use(
         return config;
     },
     error => {
+        if (error.response && error.response.status === 401) {
+            const navigate = useNavigate();
+            navigate('/auth-error');
+        }
         return Promise.reject(error);
     }
 );

@@ -27,7 +27,8 @@ const Publications = () => {
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setError('Erreur lors du chargement des publications.');
+                //setError('Erreur lors du chargement des publications.');
+                navigate('/auth-error');
                 setLoading(false);
             }
         };
