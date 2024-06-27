@@ -1,43 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchPublicationById, updatePublication, fetchProjets } from '../../services/api';
 
 const EditPublication = () => {
-    const { id } = useParams(); // Récupérer l'ID depuis les paramètres d'URL
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     const [publicationData, setPublicationData] = useState({
         titre: '',
         resume: '',
         projet_associe: '',
         date_publication: ''
     });
-    const [projets, setProjets] = useState([]); // État pour stocker les projets
+
+    const [projets, setProjets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchPublication = async () => {
+        const fetchData = async () => {
             try {
-                const data = await fetchPublicationById(id);
-                setPublicationData(data);
+                const publication = await fetchPublicationById(id);
+                setPublicationData(publication);
                 setLoading(false);
             } catch (error) {
                 console.error('Erreur lors du chargement de la publication:', error);
                 setError('Erreur lors du chargement de la publication.');
                 setLoading(false);
             }
-        };
 
-        const fetchProjetsData = async () => {
             try {
-                const data = await fetchProjets();
-                setProjets(data); // Mettre à jour l'état avec les données des projets
+                const projetsData = await fetchProjets();
+                setProjets(projetsData);
             } catch (error) {
-                console.error('Erreur lors de la récupération des projets :', error);
+                console.error('Erreur lors de la récupération des projets:', error);
             }
         };
 
-        fetchPublication();
-        fetchProjetsData(); // Appeler la fonction de récupération des projets
+        fetchData();
     }, [id]);
 
     const handleChange = (e) => {
@@ -50,9 +50,9 @@ const EditPublication = () => {
         try {
             await updatePublication(id, publicationData);
             alert('Publication modifiée avec succès !');
-            window.location.href = '/publications'; // Rediriger vers la liste des publications après modification
+            navigate('/publications'); // Redirect to the publications list
         } catch (error) {
-            console.error('Erreur lors de la mise à jour de la publication :', error);
+            console.error('Erreur lors de la mise à jour de la publication:', error);
             alert('Échec de la mise à jour de la publication.');
         }
     };

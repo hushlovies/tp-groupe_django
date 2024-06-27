@@ -8,7 +8,7 @@ const api = axios.create({
 // Ajout de l'intercepteur pour inclure le token dans les en-têtes
 api.interceptors.request.use(
     config => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('accessToken');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -19,14 +19,19 @@ api.interceptors.request.use(
     }
 );
 
+// Fonction générique pour gérer les erreurs d'Axios
+const handleAxiosError = (error) => {
+    console.error('Error:', error);
+    throw error; // Relance l'erreur pour être gérée ailleurs
+};
+
 // Fonction pour récupérer les chercheurs et reste du CRUD
 const fetchChercheurs = async () => {
     try {
         const response = await api.get('/chercheurs/');
-        return response.data;  // Retourne directement les données récupérées
+        return response.data; // Retourne directement les données récupérées
     } catch (error) {
-        console.error('Erreur lors de la récupération des chercheurs :', error);
-        throw error;  // Relance l'erreur pour être gérée ailleurs
+        handleAxiosError(error);
     }
 };
 
@@ -34,39 +39,49 @@ const fetchChercheurs = async () => {
 const fetchChercheurById = async (id) => {
     try {
         const response = await api.get(`/chercheurs/${id}/`);
-        return response.data; // Ensure response.data is returned correctly
+        return response.data; // Retourne les données du chercheur
     } catch (error) {
-        console.error(`Error fetching chercheur with ID ${id}:`, error);
-        throw error;
+        handleAxiosError(error);
     }
 };
 
 // Fonction pour ajouter un chercheur
 const addChercheur = async (chercheur) => {
-    const response = await api.post('/chercheurs/', chercheur);
-    return response.data;
+    try {
+        const response = await api.post('/chercheurs/', chercheur);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
 };
 
 // Fonction pour mettre à jour un chercheur
 const updateChercheur = async (id, chercheur) => {
-    const response = await api.put(`/chercheurs/${id}/`, chercheur);
-    return response.data;
+    try {
+        const response = await api.put(`/chercheurs/${id}/`, chercheur);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
 };
 
 // Fonction pour supprimer un chercheur
 const deleteChercheur = async (id) => {
-    const response = await api.delete(`/chercheurs/${id}/`);
-    return response.data;
+    try {
+        const response = await api.delete(`/chercheurs/${id}/`);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
 };
 
 // Fonction pour récupérer les projets et reste du CRUD
 const fetchProjets = async () => {
     try {
         const response = await api.get('/projets/');
-        return response.data;  // Retourne directement les données récupérées
+        return response.data; // Retourne directement les données récupérées
     } catch (error) {
-        console.error('Erreur lors de la récupération des projets :', error);
-        throw error;  // Relance l'erreur pour être gérée ailleurs
+        handleAxiosError(error);
     }
 };
 
@@ -74,53 +89,69 @@ const fetchProjets = async () => {
 const fetchProjetById = async (id) => {
     try {
         const response = await api.get(`/projets/${id}/`);
-        return response.data;  // Retourne les données du projet
+        return response.data; // Retourne les données du projet
     } catch (error) {
-        console.error(`Erreur lors de la récupération du projet avec l'ID ${id} :`, error);
-        throw error;  // Relance l'erreur pour être gérée ailleurs
+        handleAxiosError(error);
     }
 };
 
 // Fonction pour ajouter un projet
-const addProjet = async (projets) => {
-    const response = await api.post('/projets/', projets);
-    return response.data;
+const addProjet = async (projet) => {
+    try {
+        const response = await api.post('/projets/', projet);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
 };
 
 // Fonction pour mettre à jour un projet
-const updateProjet = async (id, projets) => {
-    const response = await api.put(`/projets/${id}/`, projets);
-    return response.data;
+const updateProjet = async (id, projet) => {
+    try {
+        const response = await api.put(`/projets/${id}/`, projet);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
 };
 
 // Fonction pour récupérer les publications et reste du CRUD
 const fetchPublications = async () => {
     try {
         const response = await api.get('/publications/');
-        return response.data;  // Retourne directement les données récupérées
+        return response.data; // Retourne directement les données récupérées
     } catch (error) {
-        console.error('Erreur lors de la récupération des publications :', error);
-        throw error;  // Relance l'erreur pour être gérée ailleurs
+        handleAxiosError(error);
     }
 };
 
-const addPublication = async (publications) => {
-    const response = await api.post('/publications/', publications);
-    return response.data;
+// Fonction pour ajouter une publication
+const addPublication = async (publication) => {
+    try {
+        const response = await api.post('/publications/', publication);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
 };
-const updatePublication = async (id, publications) => {
-    const response = await api.put(`/publications/${id}/`, publications);
-    return response.data;
+
+// Fonction pour mettre à jour une publication
+const updatePublication = async (id, publication) => {
+    try {
+        const response = await api.put(`/publications/${id}/`, publication);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
 };
 
 // Fonction pour récupérer une publication par ID
 const fetchPublicationById = async (id) => {
     try {
         const response = await api.get(`/publications/${id}/`);
-        return response.data;  // Retourne les données de la publication
+        return response.data; // Retourne les données de la publication
     } catch (error) {
-        console.error(`Erreur lors de la récupération de la publication avec l'ID ${id} :`, error);
-        throw error;  // Relance l'erreur pour être gérée ailleurs
+        handleAxiosError(error);
     }
 };
 
@@ -133,11 +164,12 @@ export {
     deleteChercheur, 
     fetchProjets, 
     fetchProjetById, 
-    addProjet,  // Ajout de la fonction addProjet
-    updateProjet,  // Ajout de la fonction updateProjet
+    addProjet, 
+    updateProjet, 
     fetchPublications, 
     addPublication,
     updatePublication,
     fetchPublicationById 
 };
+
 export default api;

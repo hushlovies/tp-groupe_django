@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchChercheurById, updateChercheur } from '../../services/api';
 
 const EditChercheur = () => {
     const { id } = useParams(); // Get id from URL params
+    const navigate = useNavigate();
     const [chercheur, setChercheur] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -50,7 +51,7 @@ const EditChercheur = () => {
             };
             await updateChercheur(id, updatedChercheur);
             alert('Chercheur updated successfully!');
-            window.location.href = '/chercheurs';
+            navigate('/chercheurs'); // Navigate to chercheurs list using useNavigate
         } catch (error) {
             console.error('Error updating chercheur:', error);
             alert('Failed to update chercheur.');

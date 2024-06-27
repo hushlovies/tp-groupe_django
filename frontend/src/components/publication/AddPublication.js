@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { addPublication, fetchProjets } from '../../services/api';
 
 const AddPublication = () => {
+    const navigate = useNavigate();
+
     const [publicationData, setPublicationData] = useState({
         titre: '',
         resume: '',
@@ -33,11 +36,11 @@ const AddPublication = () => {
         e.preventDefault();
         try {
             await addPublication(publicationData);
-            alert('Publication added successfully!');
-            window.location.href = '/publications'; // Redirect to publications list
+            alert('Publication ajoutée avec succès !');
+            navigate('/publications'); // Redirect to publications list
         } catch (error) {
             console.error('Error adding publication:', error);
-            alert('Failed to add publication.');
+            alert('Échec de l\'ajout de la publication.');
         }
     };
 

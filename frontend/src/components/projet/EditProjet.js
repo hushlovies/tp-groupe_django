@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 import { fetchProjetById, updateProjet, fetchChercheurs } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const EditProjet = () => {
     const { id } = useParams(); // Get id from URL params
+    const navigate = useNavigate();
+
     const [projetData, setProjetData] = useState({
         titre: '',
         description: '',
@@ -13,6 +16,7 @@ const EditProjet = () => {
         chef_de_projet: null,
         chercheurs: [],
     });
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [chercheursOptions, setChercheursOptions] = useState([]);
@@ -78,7 +82,7 @@ const EditProjet = () => {
             };
             await updateProjet(id, projetToUpdate);
             alert('Projet updated successfully!');
-            window.location.href = '/projets';
+            navigate('/projets'); // Navigate to projets list using useNavigate
         } catch (error) {
             console.error('Error updating projet:', error);
             alert('Failed to update projet.');

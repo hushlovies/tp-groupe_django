@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchPublications, fetchProjets } from '../../services/api';
-
+import Header from '../Header';
 const Publications = () => {
+    const navigate = useNavigate();
+
     const [projets, setProjets] = useState([]);
     const [publications, setPublications] = useState([]);
     const [filteredPublications, setFilteredPublications] = useState([]);
@@ -111,11 +113,12 @@ const Publications = () => {
 
     return (
         <div className="container mt-4">
+             <Header/>
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3>Liste des Publications</h3>
                 <div>
                     <Link to="/add-publication">
-                        <button className="btn btn-outline-success mx-2">Ajouter une pblication</button>
+                        <button className="btn btn-outline-success mx-2">Ajouter une publication</button>
                     </Link>
                 </div>
             </div>

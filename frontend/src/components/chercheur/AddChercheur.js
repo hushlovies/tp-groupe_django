@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { addPublication, fetchChercheurs } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const AddPublication = () => {
     const [titre, setTitre] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [chercheur, setChercheur] = useState('');
-
     const [chercheurs, setChercheurs] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchChercheursData = async () => {
@@ -28,7 +29,7 @@ const AddPublication = () => {
             const publicationData = { titre, date, description, chercheur };
             await addPublication(publicationData);
             alert('Publication added successfully!');
-            window.location.href = '/publications'; // Redirect to publications list
+            navigate('/publications'); // Redirect to publications list using useNavigate
         } catch (error) {
             console.error('Error adding publication:', error);
             alert('Failed to add publication.');

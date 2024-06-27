@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { addProjet, fetchChercheurs } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const AddProjet = () => {
+    const navigate = useNavigate();
+
     const [projetData, setProjetData] = useState({
         titre: '',
         description: '',
@@ -56,7 +59,7 @@ const AddProjet = () => {
         try {
             await addProjet(projetData);
             alert('Projet ajouté avec succès !');
-            window.location.href = '/projets';
+            navigate('/projets'); // Navigate to projets list using useNavigate
         } catch (error) {
             console.error('Error adding projet:', error);
             if (error.response && error.response.data) {
