@@ -1,8 +1,17 @@
-# td-djangorestapi-CANARIA-KAIRA
-TP sur l'application de Suivi de Projets de Recherche avec Django
+# tp groupe 1 Django
+TP sur l'application de Suivi de Projets de Recherche avec Django et ajout des nouvelles fonctionnalités
+
+##Equipes
+- CANARIA Kaira
+- Rollet Gabrielle
+- Farez Lylia
+- Mahouche Tania
+
+
 
 ## Table des matières
 
+- [Fonctionnalitées](#fonctionnalitées)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -11,7 +20,12 @@ TP sur l'application de Suivi de Projets de Recherche avec Django
 - [Structure des Endpoints](#structure-des-endpoints)
 - [Tests](#tests)
 
+## Fonctionnalitées
 
+-Authentification
+- Graphe dans le dashboard avec ChartJS
+- Exportation des données en CSV
+  
 ## Prérequis
 
 Assurez-vous d'avoir les éléments suivants installés :
