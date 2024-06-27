@@ -22,7 +22,7 @@ TP sur l'application de Suivi de Projets de Recherche avec Django et ajout des n
 
 ## Fonctionnalitées
 
--Authentification
+- Authentification
 - Graphe dans le dashboard avec ChartJS
 - Exportation des données en CSV
   
