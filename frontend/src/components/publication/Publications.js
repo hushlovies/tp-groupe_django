@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPublications, fetchProjets } from '../../services/api';
+import ExportButton from '../ExportButton';
 
 const Publications = () => {
     const [projets, setProjets] = useState([]);
@@ -113,6 +114,9 @@ const Publications = () => {
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3>Liste des Publications</h3>
+                <div>
+                    <ExportButton url="/api/export/publications/" filename="publications.csv" />
+                </div>
                 <div>
                     <Link to="/add-publication">
                         <button className="btn btn-outline-success mx-2">Ajouter une pblication</button>

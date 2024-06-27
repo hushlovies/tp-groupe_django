@@ -104,6 +104,19 @@ def get_publication_by_id(request, id):
     except Publication.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+def export_publications_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="publications.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Titre', 'Resume', 'Projet assicié', 'Date de publication'])
+    projets = ProjetDeRecherche.objects.all().values_list('titre', 'resume', 'projet_associe', 'date_publication')
+    for projet in projets:
+        writer.writerow(projet)
+
+    return response
+
 # Views for authentication in front
 
 class RegisterView(generics.CreateAPIView):
