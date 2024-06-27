@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchChercheurs, deleteChercheur } from '../../services/api';
 import { Link } from 'react-router-dom';
+import ExportButton from './ExportButton';
 
 const Chercheurs = () => {
     const [chercheurs, setChercheurs] = useState([]);
@@ -109,6 +110,9 @@ const Chercheurs = () => {
            
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3>Liste des Chercheurs</h3>
+                <div>
+                    <ExportButton url="/api/export/chercheurs/" filename="chercheurs.csv" />
+                </div>
                 <div>
                 <Link to="/add-chercheur">
                         <button className="btn btn-outline-success my-2 my-sm-0">Ajouter un chercheur</button>

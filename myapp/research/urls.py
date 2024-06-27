@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('chercheurs/', views.liste_chercheurs, name='liste_chercheurs'),
+    path('export/chercheurs/', views.export_chercheurs_csv, name='export_chercheurs_csv'),
     path('chercheurs/<int:id>/', views.get_chercheur_by_id, name='get_chercheur_by_id'),
  
     path('chercheurs/modifier/<int:chercheur_id>/', views.modifier_chercheur, name='modifier_chercheur'),

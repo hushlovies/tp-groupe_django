@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Chercheur, ProjetDeRecherche, Publication
 from .forms import ChercheurForm, ProjetDeRechercheForm, PublicationForm
 from .serializers import ChercheurSerializer, ProjetDeRechercheSerializer, PublicationSerializer, RegisterSerializer
+import csv
+from django.http import HttpResponse
 
 # Views for admin
 
@@ -51,6 +53,18 @@ def get_chercheur_by_id(request, id):
         return Response(serializer.data)
     except Chercheur.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+def export_chercheurs_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="chercheurs.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Nom', 'Spécialité'])
+    chercheurs = Chercheur.objects.all().values_list('nom', 'specialite')
+    for chercheur in chercheurs:
+        writer.writerow(chercheur)
+
+    return response
 
 class ProjetDeRechercheViewSet(viewsets.ModelViewSet):
     queryset = ProjetDeRecherche.objects.all()
