@@ -110,10 +110,10 @@ def export_publications_csv(request):
     response['Content-Disposition'] = 'attachment; filename="publications.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Titre', 'Resume', 'Projet assicié', 'Date de publication'])
-    projets = ProjetDeRecherche.objects.all().values_list('titre', 'resume', 'projet_associe', 'date_publication')
-    for projet in projets:
-        writer.writerow(projet)
+    writer.writerow(['Titre', 'Resume', 'Projet associé', 'Date de publication'])
+    publications = Publication.objects.all().values_list('titre', 'resume', 'projet_associe', 'date_publication')
+    for publication in publications:
+        writer.writerow(publication)
 
     return response
 
