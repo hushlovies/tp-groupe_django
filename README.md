@@ -26,11 +26,11 @@ Clonez le dépôt et installez les dépendances :
 
 ```bash
 git clone https://github.com/votre-utilisateur/votre-repo.git
-cd votre-repo
-python -m venv venv
-source venv/bin/activate  # Sur Windows: venv\Scripts\activate
+python -m venv env
+pip install --upgrade setuptools
+env\Scripts\activate
 pip install -r requirements.txt
-
+cd myapp
 ```
 
 ## Configuration
@@ -62,9 +62,16 @@ python manage.py createsuperuser
 Démarrez le serveur de développement :
 
 ```bash
+cd myapp
 python manage.py runserver
+```
 
-
+Démarrez le frontend de développement :
+Dans un autre terminal, saissisez la commande
+```bash
+cd frontend
+npm install
+npm run start
 ```
 
 ## Utilisation de l'API
