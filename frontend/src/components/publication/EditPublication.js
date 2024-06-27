@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchPublicationById, updatePublication, fetchProjets } from '../../services/api';
+import Select from 'react-select';
 
 const EditPublication = () => {
     const { id } = useParams();
@@ -34,6 +35,7 @@ const EditPublication = () => {
                 setProjets(projetsData);
             } catch (error) {
                 console.error('Erreur lors de la récupération des projets:', error);
+                setError('Erreur lors de la récupération des projets.');
             }
         };
 
@@ -58,11 +60,11 @@ const EditPublication = () => {
     };
 
     if (loading) {
-        return <div>Chargement en cours...</div>;
+        return <div className="container mt-4">Chargement en cours...</div>;
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div className="container mt-4">{error}</div>;
     }
 
     return (
@@ -92,18 +94,14 @@ const EditPublication = () => {
                 </div>
                 <div className="form-group">
                     <label>Projet Associé:</label>
-                    <select
-                        className="form-control"
-                        name="projet_associe"
-                        value={publicationData.projet_associe}
-                        onChange={handleChange}
+                    <Select
+                        options={projets.map(projet => ({ value: projet.id, label: projet.titre }))}
+                        value={projets.find(projet => projet.id === publicationData.projet_associe)}
+                        onChange={option => setPublicationData({ ...publicationData, projet_associe: option.value })}
+                        placeholder="Sélectionner un projet"
+                        isClearable
                         required
-                    >
-                        <option value="">Sélectionner un projet</option>
-                        {projets.map(projet => (
-                            <option key={projet.id} value={projet.id}>{projet.titre}</option>
-                        ))}
-                    </select>
+                    />
                 </div>
                 <div className="form-group">
                     <label>Date de Publication:</label>

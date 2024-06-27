@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addPublication, fetchProjets } from '../../services/api';
+import Select from 'react-select';
 
 const AddPublication = () => {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ const AddPublication = () => {
     });
 
     const [projets, setProjets] = useState([]);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchProjetsData = async () => {
@@ -21,6 +23,7 @@ const AddPublication = () => {
                 setProjets(data);
             } catch (error) {
                 console.error('Error fetching projets:', error);
+                setError('Failed to fetch projets.');
             }
         };
 
@@ -47,6 +50,7 @@ const AddPublication = () => {
     return (
         <div className="container mt-4">
             <h3>Ajouter Publication</h3>
+            {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Titre:</label>
@@ -71,18 +75,14 @@ const AddPublication = () => {
                 </div>
                 <div className="form-group">
                     <label>Projet associé:</label>
-                    <select
-                        className="form-control"
-                        name="projet_associe"
-                        value={publicationData.projet_associe}
-                        onChange={handleChange}
+                    <Select
+                        options={projets.map(projet => ({ value: projet.id, label: projet.titre }))}
+                        value={projets.find(projet => projet.id === publicationData.projet_associe)}
+                        onChange={option => setPublicationData({ ...publicationData, projet_associe: option.value })}
+                        placeholder="Sélectionner un projet"
+                        isClearable
                         required
-                    >
-                        <option value="">Sélectionner un projet</option>
-                        {projets.map(projet => (
-                            <option key={projet.id} value={projet.id}>{projet.titre}</option>
-                        ))}
-                    </select>
+                    />
                 </div>
                 <div className="form-group">
                     <label>Date de publication:</label>

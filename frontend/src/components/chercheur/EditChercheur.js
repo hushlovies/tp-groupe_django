@@ -50,54 +50,76 @@ const EditChercheur = () => {
                 specialite: formData.specialite
             };
             await updateChercheur(id, updatedChercheur);
-            alert('Chercheur updated successfully!');
+            alert('Chercheur mis à jour avec succès !');
             navigate('/chercheurs'); // Navigate to chercheurs list using useNavigate
         } catch (error) {
             console.error('Error updating chercheur:', error);
-            alert('Failed to update chercheur.');
+            alert('Échec de la mise à jour du chercheur.');
         }
     };
 
+    const handleReturn = () => {
+        // Go back to the previous page
+        navigate(-1);
+    };
+
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="container mt-5">Loading...</div>;
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div className="container mt-5">{error}</div>;
     }
 
     if (!chercheur) {
-        return <div>Chercheur not found.</div>;
+        return <div className="container mt-5">Chercheur non trouvé.</div>;
     }
 
     return (
-        <div>
-            <h2>Modifier Chercheur</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="nom">Nom:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="nom"
-                        name="nom"
-                        value={formData.nom}
-                        onChange={handleChange}
-                    />
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h2 className="mb-4">Modifier Chercheur</h2>
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="nom">Nom :</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="nom"
+                                        name="nom"
+                                        value={formData.nom}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="specialite">Spécialité :</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="specialite"
+                                        name="specialite"
+                                        value={formData.specialite}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-3 my-4 ">
+                                    <button type="submit" className="btn btn-primary mr-2">
+                                        Enregistrer
+                                    </button>
+                                    <button type="button" className="btn btn-secondary ml-4" onClick={handleReturn}>
+                                        Retour
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="specialite">Spécialité:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="specialite"
-                        name="specialite"
-                        value={formData.specialite}
-                        onChange={handleChange}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">Enregistrer</button>
-            </form>
+            </div>
         </div>
     );
 };

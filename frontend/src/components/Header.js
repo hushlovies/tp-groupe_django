@@ -62,7 +62,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar bg="light" expand="lg" className="mb-3">
+        <Navbar bg="light" expand="lg" className="mb-3 px-4">
             <Navbar.Brand href="/chercheurs/">Lists</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
