@@ -62,9 +62,15 @@ python manage.py createsuperuser
 Démarrez le serveur de développement :
 
 ```bash
+cd myapp
 python manage.py runserver
+```
 
-
+Démarrez le frontend de développement :
+```bash
+cd frontend
+npm install
+npm run start
 ```
 
 ## Utilisation de l'API
