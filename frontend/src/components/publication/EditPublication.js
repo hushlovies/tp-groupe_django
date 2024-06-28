@@ -1,43 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchPublicationById, updatePublication, fetchProjets } from '../../services/api';
+import Select from 'react-select';
 
 const EditPublication = () => {
-    const { id } = useParams(); // Récupérer l'ID depuis les paramètres d'URL
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     const [publicationData, setPublicationData] = useState({
         titre: '',
         resume: '',
         projet_associe: '',
         date_publication: ''
     });
-    const [projets, setProjets] = useState([]); // État pour stocker les projets
+
+    const [projets, setProjets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchPublication = async () => {
+        const fetchData = async () => {
             try {
-                const data = await fetchPublicationById(id);
-                setPublicationData(data);
+                const publication = await fetchPublicationById(id);
+                setPublicationData(publication);
                 setLoading(false);
             } catch (error) {
                 console.error('Erreur lors du chargement de la publication:', error);
                 setError('Erreur lors du chargement de la publication.');
                 setLoading(false);
             }
-        };
 
-        const fetchProjetsData = async () => {
             try {
-                const data = await fetchProjets();
-                setProjets(data); // Mettre à jour l'état avec les données des projets
+                const projetsData = await fetchProjets();
+                setProjets(projetsData);
             } catch (error) {
-                console.error('Erreur lors de la récupération des projets :', error);
+                console.error('Erreur lors de la récupération des projets:', error);
+                setError('Erreur lors de la récupération des projets.');
             }
         };
 
-        fetchPublication();
-        fetchProjetsData(); // Appeler la fonction de récupération des projets
+        fetchData();
     }, [id]);
 
     const handleChange = (e) => {
@@ -50,19 +52,19 @@ const EditPublication = () => {
         try {
             await updatePublication(id, publicationData);
             alert('Publication modifiée avec succès !');
-            window.location.href = '/publications'; // Rediriger vers la liste des publications après modification
+            navigate('/publications'); // Redirect to the publications list
         } catch (error) {
-            console.error('Erreur lors de la mise à jour de la publication :', error);
+            console.error('Erreur lors de la mise à jour de la publication:', error);
             alert('Échec de la mise à jour de la publication.');
         }
     };
 
     if (loading) {
-        return <div>Chargement en cours...</div>;
+        return <div className="container mt-4">Chargement en cours...</div>;
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div className="container mt-4">{error}</div>;
     }
 
     return (
@@ -92,18 +94,14 @@ const EditPublication = () => {
                 </div>
                 <div className="form-group">
                     <label>Projet Associé:</label>
-                    <select
-                        className="form-control"
-                        name="projet_associe"
-                        value={publicationData.projet_associe}
-                        onChange={handleChange}
+                    <Select
+                        options={projets.map(projet => ({ value: projet.id, label: projet.titre }))}
+                        value={projets.find(projet => projet.id === publicationData.projet_associe)}
+                        onChange={option => setPublicationData({ ...publicationData, projet_associe: option.value })}
+                        placeholder="Sélectionner un projet"
+                        isClearable
                         required
-                    >
-                        <option value="">Sélectionner un projet</option>
-                        {projets.map(projet => (
-                            <option key={projet.id} value={projet.id}>{projet.titre}</option>
-                        ))}
-                    </select>
+                    />
                 </div>
                 <div className="form-group">
                     <label>Date de Publication:</label>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { fetchChercheurs, deleteChercheur } from '../../services/api';
-import { Link } from 'react-router-dom';
 import ExportButton from '../ExportButton';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from '../Header';
 
 const Chercheurs = () => {
     const [chercheurs, setChercheurs] = useState([]);
@@ -10,30 +12,58 @@ const Chercheurs = () => {
     const [error, setError] = useState(null);
     const [filterNom, setFilterNom] = useState('');
     const [filterSpecialite, setFilterSpecialite] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchChercheurs();
-                setChercheurs(data);
-                setFilteredChercheurs(data); // Initially set filtered data to all chercheurs
+                const token = localStorage.getItem('accessToken');
+                if (!token) {
+                    // Redirect to login if token is not present
+                    navigate('/login');
+                    return;
+                }
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                };
+
+                const response = await axios.get('http://127.0.0.1:8000/api/chercheurs/', config);
+                setChercheurs(response.data);
+                setFilteredChercheurs(response.data); // Initially set filtered data to all chercheurs
                 setLoading(false);
             } catch (error) {
                 console.error('Erreur :', error);
-                setError('Erreur lors du chargement des chercheurs.');
+                //setError('Erreur lors du chargement des chercheurs.');
+                navigate('/auth-error');
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, []);
+    }, [navigate]);
 
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this chercheur?')) {
             try {
-                await deleteChercheur(id);
-                alert("Delete successfully");
-                fetchChercheursData(); 
+                const token = localStorage.getItem('accessToken');
+                if (!token) {
+                    // Redirect to login if token is not present
+                    navigate('/login');
+                    return;
+                }
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                };
+
+                await axios.delete(`http://127.0.0.1:8000/api/chercheurs/${id}/`, config);
+                alert('Delete successfully');
+                fetchChercheursData();
             } catch (error) {
                 console.error('Erreur lors de la suppression du chercheur :', error);
             }
@@ -42,9 +72,22 @@ const Chercheurs = () => {
 
     const fetchChercheursData = async () => {
         try {
-            const data = await fetchChercheurs();
-            setChercheurs(data);
-            applyFilters(data); // Reapply filters after fetching fresh data
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                // Redirect to login if token is not present
+                navigate('/login');
+                return;
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
+            const response = await axios.get('http://127.0.0.1:8000/api/chercheurs/', config);
+            setChercheurs(response.data);
+            applyFilters(response.data); // Reapply filters after fetching fresh data
         } catch (error) {
             console.error('Erreur :', error);
         }
@@ -107,7 +150,7 @@ const Chercheurs = () => {
 
     return (
         <div className="container mt-4">
-           
+            <Header/>
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3>Liste des Chercheurs</h3>
                 <div>
@@ -117,18 +160,15 @@ const Chercheurs = () => {
                 <Link to="/add-chercheur">
                         <button className="btn btn-outline-success my-2 my-sm-0">Ajouter un chercheur</button>
                     </Link>
-                
                 </div>
             </div>
-            
+
             <div className="row border my-3 mx-1 py-3">
-                
                 <div className="col-md-5">
                     <div className="">
                         <div className="form-group mx-2">
-                            
                             <input
-                            placeholder='Nom'
+                                placeholder='Nom'
                                 type="text"
                                 className="form-control"
                                 id="nom"
@@ -140,11 +180,9 @@ const Chercheurs = () => {
                 </div>
                 <div className="col-md-5">
                     <div className="">
-                       
                         <div className="form-group mx-2">
-                           
                             <input
-                            placeholder='Spécialité'
+                                placeholder='Spécialité'
                                 type="text"
                                 className="form-control"
                                 id="specialite"
@@ -152,7 +190,6 @@ const Chercheurs = () => {
                                 onChange={handleChangeSpecialite}
                             />
                         </div>
-                        
                     </div>
                 </div>
                 <div className="col-md-1">
@@ -161,6 +198,7 @@ const Chercheurs = () => {
                     </div>
                 </div>
             </div>
+
             <table className="table table-bordered table-striped">
                 <thead>
                     <tr>

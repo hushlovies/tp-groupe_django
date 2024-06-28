@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { fetchProjetById, updateProjet, fetchChercheurs } from '../../services/api';
 
 const EditProjet = () => {
-    const { id } = useParams(); // Get id from URL params
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     const [projetData, setProjetData] = useState({
         titre: '',
         description: '',
@@ -13,6 +15,7 @@ const EditProjet = () => {
         chef_de_projet: null,
         chercheurs: [],
     });
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [chercheursOptions, setChercheursOptions] = useState([]);
@@ -36,7 +39,6 @@ const EditProjet = () => {
                 setLoading(false);
             }
         };
-        fetchData();
 
         const fetchChercheursData = async () => {
             try {
@@ -52,45 +54,46 @@ const EditProjet = () => {
             }
         };
 
+        fetchData();
         fetchChercheursData();
     }, [id]);
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         const { name, value } = e.target;
         setProjetData({ ...projetData, [name]: value });
     };
 
-    const handleChefDeProjetChange = (selectedOption) => {
+    const handleChefDeProjetChange = selectedOption => {
         setProjetData({ ...projetData, chef_de_projet: selectedOption });
     };
 
-    const handleChercheursChange = (selectedOptions) => {
+    const handleChercheursChange = selectedOptions => {
         setProjetData({ ...projetData, chercheurs: selectedOptions });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
         try {
             const projetToUpdate = {
                 ...projetData,
-                chef_de_projet: projetData.chef_de_projet.value, // Sending the ID of chef_de_projet
-                chercheurs: projetData.chercheurs.map(chercheur => chercheur.value), // Sending IDs of chercheurs
+                chef_de_projet: projetData.chef_de_projet.value,
+                chercheurs: projetData.chercheurs.map(chercheur => chercheur.value),
             };
             await updateProjet(id, projetToUpdate);
-            alert('Projet updated successfully!');
-            window.location.href = '/projets';
+            alert('Projet mis à jour avec succès !');
+            navigate('/projets');
         } catch (error) {
             console.error('Error updating projet:', error);
-            alert('Failed to update projet.');
+            alert('Échec de la mise à jour du projet.');
         }
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="container mt-4">Loading...</div>;
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div className="container mt-4">{error}</div>;
     }
 
     return (
