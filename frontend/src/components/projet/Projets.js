@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchProjets, fetchChercheurs } from '../../services/api';
+import { fetchProjets, fetchChercheurs, deleteProjet } from '../../services/api';
 import ExportButton from '../ExportButton';
 import Header from '../Header';
+import axios from 'axios';
 
 const Projets = () => {
     const navigate = useNavigate();
@@ -51,17 +52,24 @@ const Projets = () => {
 
     const handleDelete = async (id) => {
         try {
-            // Perform delete operation here (implementation depends on your API)
-            const response = await fetch(`http://localhost:8000/api/projets/${id}/`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add any necessary headers (e.g., authorization)
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Failed to delete projet');
+            
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                // Redirect to login if token is not present
+                navigate('/login');
+                return;
             }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
+            // Perform delete operation here (implementation depends on your API)
+            await axios.delete(`http://127.0.0.1:8000/api/projets/${id}/`, config);
+                alert('Delete successfully');
+                fetchProjets();
             // Update state after successful deletion
             setProjets(projets.filter(projet => projet.id !== id));
             setFilteredProjets(filteredProjets.filter(projet => projet.id !== id));

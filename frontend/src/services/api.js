@@ -121,6 +121,15 @@ const updateProjet = async (id, projet) => {
     }
 };
 
+const deleteProjet = async (id) => {
+    try {
+        const response = await api.delete(`/projets/${id}/`);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
+};
+
 // Fonction pour récupérer les publications et reste du CRUD
 const fetchPublications = async () => {
     try {
@@ -161,6 +170,15 @@ const fetchPublicationById = async (id) => {
     }
 };
 
+const deletePublication = async (id) => {
+    try {
+        const response = await api.delete(`/publications/${id}/`);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
+};
+
 // Exportation des fonctions et de l'instance Axios configurée
 export { 
     fetchChercheurs, 
@@ -175,7 +193,9 @@ export {
     fetchPublications, 
     addPublication,
     updatePublication,
-    fetchPublicationById 
+    fetchPublicationById ,
+    deleteProjet,
+    deletePublication,
 };
 
 export default api;

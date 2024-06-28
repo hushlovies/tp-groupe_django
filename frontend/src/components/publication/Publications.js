@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { fetchPublications, fetchProjets } from '../../services/api';
 import ExportButton from '../ExportButton';
 import Header from '../Header';
+import axios from 'axios';
 
 const Publications = () => {
     const navigate = useNavigate();
@@ -45,16 +46,21 @@ const Publications = () => {
     const handleDelete = async (id) => {
         try {
             // Perform delete operation here (implementation depends on your API)
-            const response = await fetch(`http://localhost:8000/api/publications/${id}/`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add any necessary headers (e.g., authorization)
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Failed to delete publication');
-            }
+            const token = localStorage.getItem('accessToken');
+                if (!token) {
+                    // Redirect to login if token is not present
+                    navigate('/login');
+                    return;
+                }
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                };
+
+                await axios.delete(`http://127.0.0.1:8000/api/publications/${id}/`, config);
+                //alert('Delete successfully');
             // Update state after successful deletion
             setPublications(publications.filter(pub => pub.id !== id));
             setFilteredPublications(filteredPublications.filter(pub => pub.id !== id));
