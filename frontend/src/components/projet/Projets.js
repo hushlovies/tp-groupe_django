@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchProjets, fetchChercheurs } from '../../services/api';
+import ExportButton from '../ExportButton';
+import Header from '../Header';
 
 const Projets = () => {
+    const navigate = useNavigate();
+
     const [projets, setProjets] = useState([]);
     const [chercheurs, setChercheurs] = useState([]);
     const [filteredProjets, setFilteredProjets] = useState([]);
@@ -25,7 +29,8 @@ const Projets = () => {
                 setLoading(false);
             } catch (error) {
                 console.error('Erreur :', error);
-                setError('Erreur lors du chargement des projets.');
+                //setError('Erreur lors du chargement des projets.');
+                navigate('/auth-error');
                 setLoading(false);
             }
         };
@@ -117,8 +122,12 @@ const Projets = () => {
 
     return (
         <div className="container mt-4">
+             <Header/>
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3>Liste des Projets</h3>
+                <div>
+                    <ExportButton url="/api/export/projets/" filename="projets.csv" />
+                </div>
                 <div>
                     <Link to="/add-projet">
                         <button className="btn btn-outline-success mx-2">Ajouter Projet</button>
@@ -176,9 +185,12 @@ const Projets = () => {
                             <td>{getChefDeProjetName(projet.chef_de_projet)}</td>
                             <td>{getChercheursNames(projet.chercheurs)}</td>
                             <td>
-                                <Link to={`/edit-projet/${projet.id}`}>
-                                    <button className="btn btn-outline-primary mx-1">Modifier</button>
-                                </Link>
+                                <button
+                                    className="btn btn-outline-primary mx-1"
+                                    onClick={() => navigate(`/edit-projet/${projet.id}`)}
+                                >
+                                    Modifier
+                                </button>
                                 <button
                                     className="btn btn-outline-danger mx-1"
                                     onClick={() => handleDelete(projet.id)}
