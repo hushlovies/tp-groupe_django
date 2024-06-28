@@ -90,11 +90,22 @@ def export_projets_csv(request):
 
     writer = csv.writer(response)
     writer.writerow(['Titre', 'Description', 'Date Début', 'Date Fin Prévue', 'Chef de Projet', 'Chercheurs'])
-    projets = ProjetDeRecherche.objects.all().values_list('titre', 'description', 'date_debut', 'date_fin_prevue', 'chef_de_projet', 'chercheurs')
+
+    projets = ProjetDeRecherche.objects.all()
     for projet in projets:
-        writer.writerow(projet)
+        chercheurs = projet.chercheurs.all()
+        chercheurs_noms = ', '.join([chercheur.nom for chercheur in chercheurs])
+        writer.writerow([
+            projet.titre,
+            projet.description,
+            projet.date_debut,
+            projet.date_fin_prevue,
+            projet.chef_de_projet.nom,
+            chercheurs_noms
+        ])
 
     return response
+
 
 class PublicationViewSet(viewsets.ModelViewSet):
     queryset = Publication.objects.all()
@@ -118,11 +129,18 @@ def export_publications_csv(request):
 
     writer = csv.writer(response)
     writer.writerow(['Titre', 'Resume', 'Projet associé', 'Date de publication'])
-    publications = Publication.objects.all().values_list('titre', 'resume', 'projet_associe', 'date_publication')
+
+    publications = Publication.objects.all()
     for publication in publications:
-        writer.writerow(publication)
+        writer.writerow([
+            publication.titre,
+            publication.resume,
+            publication.projet_associe.titre,
+            publication.date_publication
+        ])
 
     return response
+
 
 # Views for authentication in front
 
