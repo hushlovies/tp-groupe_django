@@ -4,10 +4,11 @@ import TimeGraphe from './graphes/TimeGraphe';
 import ChercheurGraph from './graphes/ChercheurGraph';
 import React from 'react';
 import Card from 'react-bootstrap/Card'; // Importer le composant de carte depuis Bootstrap
-
+import Header from './Header';
 const Dashboard = () => {
     return (
         <div className="d">
+            <Header/>
             {/* Première carte */}
             <Card className="mb-3">
                 <Card.Body>

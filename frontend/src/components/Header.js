@@ -4,8 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
-import { Link } from 'react-router-dom';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -72,6 +70,7 @@ const Header = () => {
                     <Nav.Link as={Link} to="/chercheurs">Chercheurs</Nav.Link>
                     <Nav.Link as={Link} to="/projets">Projets</Nav.Link>
                     <Nav.Link as={Link} to="/publications">Publications</Nav.Link>
+                    <Nav.Link as={Link} to="/graphes">Tableau de bord</Nav.Link>
                 </Nav>
                 {isLoggedIn ? (
                     <Nav>

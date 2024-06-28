@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
+import { fetchPublications, fetchProjets, fetchChercheur } from '../../services/api';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 
@@ -16,8 +17,8 @@ const TimeGraphe = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const publicationsResponse = await axios.get('http://localhost:8000/api/publications/');
-        const publications = publicationsResponse.data;
+        const publicationsResponse = await fetchPublications();
+        const publications = publicationsResponse;
 
         const publicationsByDate = publications.reduce((acc, publication) => {
           const date = new Date(publication.date_publication).toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { fetchPublications, fetchProjets } from '../../services/api';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Legend, Title, Tooltip } from 'chart.js';
 
@@ -18,12 +19,12 @@ const ChercheurGraph = () => {
     const fetchData = async () => {
       try {
         // Récupérer les données des publications
-        const publicationsResponse = await axios.get('http://localhost:8000/api/publications/');
-        const publications = publicationsResponse.data;
+        const publicationsResponse = await fetchPublications();
+        const publications = publicationsResponse;
 
         // Récupérer les données des projets
-        const projetsResponse = await axios.get('http://localhost:8000/api/projets/');
-        const projets = projetsResponse.data;
+        const projetsResponse = await fetchProjets();
+        const projets = projetsResponse;
 
         // Compter les publications par projet
         const publicationsByProject = {};

@@ -1,6 +1,7 @@
 // src/Histogramme.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { fetchPublications, fetchProjets, fetchChercheurs } from '../../services/api';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -15,11 +16,11 @@ const Histogramme = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const chercheursResponse = await axios.get('http://localhost:8000/api/chercheurs/');
-        const projetsResponse = await axios.get('http://localhost:8000/api/projets/');
+        const chercheursResponse = await fetchChercheurs();
+        const projetsResponse = await fetchProjets();
 
-        const chercheurs = chercheursResponse.data;
-        const projets = projetsResponse.data;
+        const chercheurs = chercheursResponse;
+        const projets = projetsResponse;
 
         const chercheurProjetCount = chercheurs.map(chercheur => {
           const projetsCount = projets.filter(projet => projet.chercheurs.includes(chercheur.id)).length;
